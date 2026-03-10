@@ -1,18 +1,20 @@
-# gdgs:godot-gaussian-splatting
+# gdgs: Godot Gaussian Splatting
 
-[中文说明](README_CN.md)
+Maintainer: ReconWorldLab
 
-A Gaussian Splatting plugin for Godot 4 based on `CompositorEffect` and compute shaders.
+[简体中文说明](README_CN.md)
 
-`gdgs` can import supported 3DGS `.ply` assets, place them in a Godot scene through `GaussianSplatNode`, and composite the result with the regular 3D scene using scene depth.
+`gdgs` is a Godot 4 Gaussian Splatting plugin built around `CompositorEffect` and compute shaders.
+
+It imports supported 3D Gaussian Splat `.ply` assets, places them in a scene through `GaussianSplatNode`, and composites the result with the regular 3D scene using scene depth.
 
 ## Features
 
 - Import supported Gaussian Splat `.ply` files as Godot resources.
 - Render one or more `GaussianSplatNode` instances in the same scene.
 - Composite Gaussian Splat rendering with standard Godot 3D content through `WorldEnvironment.compositor`.
-- Depth-aware mixing with the scene depth buffer.
-- Editor-side preview support and gizmo support.
+- Mix Gaussian results against the scene depth buffer.
+- Preview in the editor and manipulate the node with a gizmo.
 - Built-in debug views for alpha, color, GS depth, scene depth, and depth rejection.
 
 ## Requirements
@@ -24,14 +26,17 @@ A Gaussian Splatting plugin for Godot 4 based on `CompositorEffect` and compute 
 
 ## Installation
 
-1. Copy the `addons/gdgs` folder into your Godot project.
-2. Open the project in Godot.
-3. Go to `Project > Project Settings > Plugins`.
-4. Enable the `gdgs` plugin.
+1. Create an `addons` folder in your Godot project if it does not already exist.
+2. Copy the `gdgs` folder from this repository into your project as `addons/gdgs`.
+3. Open the project in Godot.
+4. Go to `Project > Project Settings > Plugins`.
+5. Enable the `gdgs` plugin.
+
+After installation, the plugin root should be available at `res://addons/gdgs`.
 
 ## Quick Start
 
-1. Add a supported `.ply` file to the project.
+1. Add a supported `.ply` file to your project. The repository includes `demo.ply` as a sample asset.
 2. Wait for Godot to import it into a resource.
 3. Add a `GaussianSplatNode` to your scene.
 4. Assign the imported resource to the `gaussian` property of `GaussianSplatNode`.
@@ -40,11 +45,9 @@ A Gaussian Splatting plugin for Godot 4 based on `CompositorEffect` and compute 
 7. Add a `CompositorEffect` to that `Compositor`, and set its script to `res://addons/gdgs/postprocess.gd`.
 8. Run the scene.
 
-You can use `node_3d.tscn` in the repository as a minimal reference scene.
-
 ## Scene Setup Notes
 
-- `GaussianSplatNode` is a scene object used to hold transform and resource references. Actual rendering is performed by the compositor pass, not by Godot's standard mesh pipeline.
+- `GaussianSplatNode` stores transform and resource references. Actual rendering is performed by the compositor pass, not by Godot's standard mesh pipeline.
 - Multiple `GaussianSplatNode` instances are supported and are rendered together in the same Gaussian pass.
 - If you replace the source `.ply` file contents, reimport it in Godot so the generated resource stays in sync.
 
@@ -81,22 +84,31 @@ This importer is meant for 3D Gaussian Splatting style assets, not generic point
 
 ## Repository Layout
 
-- `addons/gdgs/gaussian`: PLY importer and Gaussian resource definitions.
-- `addons/gdgs/node`: Scene node and editor gizmo.
-- `addons/gdgs/rendering`: Render manager, rendering context, and compute shaders.
-- `addons/gdgs/postprocess.gd`: Compositor effect entry point.
+- `gdgs/`: Plugin root in this repository. Copy this folder into your Godot project as `addons/gdgs`.
+- `gdgs/gaussian`: PLY importer and Gaussian resource definitions.
+- `gdgs/node`: Scene node and editor gizmo.
+- `gdgs/rendering`: Render manager, rendering context, and compute shaders.
+- `gdgs/postprocess.gd`: Compositor effect entry point.
+- `demo.ply`: Sample Gaussian asset for import testing.
 
 ## Known Limitations
 
-- The plugin currently targets desktop Forward Plus rendering only.
-- Rendering depends on Godot's compositor and compute pipeline, so compatibility/mobile renderers are not supported.
+- The plugin currently targets desktop `Forward Plus` rendering only.
+- Rendering depends on Godot's compositor and compute pipeline, so compatibility and mobile renderers are not supported.
 - The render manager currently lives as a shared root-level runtime manager, so very complex editor multi-scene or multi-viewport workflows may still need additional validation.
 - The importer expects a specific Gaussian Splat property layout.
 
-## Demo
+## Acknowledgements
 
-The repository includes sample assets and a sample scene:
+- The shader work in this plugin was developed with reference to [2Retr0/GodotGaussianSplatting](https://github.com/2Retr0/GodotGaussianSplatting). Thanks to 2Retr0 for publishing that project.
+- The upstream `2Retr0/GodotGaussianSplatting` repository is published under the MIT License. If you reuse or redistribute closely related derivative work, review and retain the relevant upstream license notice.
+- The radix sort shader files also retain their own upstream attribution headers, as documented in the shader sources.
 
-- `node_3d.tscn`
-- `demo.ply`
-- `zqbx.ply`
+## References
+
+- [2Retr0/GodotGaussianSplatting](https://github.com/2Retr0/GodotGaussianSplatting)
+- [3D Gaussian Splatting for Real-Time Radiance Field Rendering](https://arxiv.org/abs/2308.04079)
+
+## License
+
+This project is released under the [MIT License](LICENSE).
