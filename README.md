@@ -12,7 +12,7 @@ Current plugin version: `2.1.0`
 
 ### Showcase
 
-GIF previews converted from the videos under `gdgs-github`:
+These previews show roughly 6 million Gaussian points rendered together inside a real-time game scene.
 
 | Room 0 | Room 1 |
 | --- | --- |
